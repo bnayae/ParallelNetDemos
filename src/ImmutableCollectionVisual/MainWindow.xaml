@@ -1,0 +1,150 @@
+﻿<Window x:Class="Sela.Samples.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="MainWindow" Height="350" Width="835.4"
+        xmlns:i="clr-namespace:System.Windows.Interactivity;assembly=System.Windows.Interactivity"
+        xmlns:local="clr-namespace:Sela.Samples"
+        xmlns:po="http://schemas.microsoft.com/winfx/2006/xaml/presentation/options"
+        xmlns:cal="http://www.caliburnproject.org"
+        WindowState="Maximized">
+    <Window.Resources>
+        <Style x:Key="ListBoxStyle" TargetType="ListBox">
+            <Style.Resources>
+                <!--  Background of selected item when focused  -->
+                <SolidColorBrush x:Key="{x:Static SystemColors.HighlightBrushKey}"
+                             po:Freeze="True"
+                             Color="Transparent" />
+                <!--  Background of selected item when not focused  -->
+                <SolidColorBrush x:Key="{x:Static SystemColors.ControlBrushKey}"
+                             po:Freeze="True"
+                             Color="Transparent" />
+            </Style.Resources>
+        </Style>
+
+        <local:HasChangedBackgroundConverter x:Key="hasChangedConverter"/>
+        <local:ItemDataTemplateSelector x:Key="itemSelector"/>
+
+        <DataTemplate x:Key="NodeTemplate">
+            <Border BorderBrush="#FF232020" BorderThickness="2" Grid.Row="1" CornerRadius="5" Padding="5" MinHeight="30" MinWidth="30"
+                    Background="{Binding HasChanged, Converter={StaticResource hasChangedConverter}}">
+                <TextBlock Text="{Binding Value}" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+            </Border>
+        </DataTemplate>
+
+        <DataTemplate x:Key="ConnectorTemplate">
+            <Line X1="0" Y1="0" X2="{Binding XRelative}" Y2="{Binding YRelative}" Stroke="#FF232020" StrokeThickness="1"/>
+        </DataTemplate>
+
+    </Window.Resources>
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" MinHeight="10"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+        <Border BorderBrush="#FF232020" BorderThickness="2" Padding="2" Background="#FFB1B4BA">
+            <Grid>
+                <StackPanel Orientation="Horizontal">
+                    <Button Content="Empty" Margin="2,0,2,0">
+                        <i:Interaction.Triggers>
+                            <i:EventTrigger EventName="Click">
+                                <cal:ActionMessage MethodName="Empty">
+                                </cal:ActionMessage>
+                            </i:EventTrigger>
+                        </i:Interaction.Triggers>
+                    </Button>
+                    <Button Content="Add" Margin="2,0,2,0">
+                        <i:Interaction.Triggers>
+                            <i:EventTrigger EventName="Click">
+                                <cal:ActionMessage MethodName="Add">
+                                    <cal:Parameter Value="{Binding ElementName=_value, Path=Text}" />
+                                </cal:ActionMessage>
+                            </i:EventTrigger>
+                        </i:Interaction.Triggers>
+                    </Button>
+                    <Button Content="Insert" Margin="2,0,2,0">
+                        <i:Interaction.Triggers>
+                            <i:EventTrigger EventName="Click">
+                                <cal:ActionMessage MethodName="Insert">
+                                    <cal:Parameter Value="{Binding ElementName=_index, Path=Text}" />
+                                    <cal:Parameter Value="{Binding ElementName=_value, Path=Text}" />
+                                </cal:ActionMessage>
+                            </i:EventTrigger>
+                        </i:Interaction.Triggers>
+                    </Button>
+                    <Button Content="AddRange" Margin="4,0,2,0">
+                        <i:Interaction.Triggers>
+                            <i:EventTrigger EventName="Click">
+                                <cal:ActionMessage MethodName="AddRange">
+                                    <cal:Parameter Value="{Binding ElementName=_value, Path=Text}" />
+                                    <cal:Parameter Value="{Binding ElementName=_rangeCount, Path=Text}" />
+                                </cal:ActionMessage>
+                            </i:EventTrigger>
+                        </i:Interaction.Triggers>
+                    </Button>
+                    <TextBlock Text="value" Margin="10,3,2,0"/>
+                    <TextBox x:Name="_value" Text="{Binding Value}" MinWidth="40" HorizontalContentAlignment="Center"/>
+                    <TextBlock Text="index" Margin="10,3,2,0"/>
+                    <TextBox x:Name="_index" Text="0" MinWidth="40" HorizontalContentAlignment="Center"/>
+                    <TextBlock Text="range count" Margin="10,3,2,0"/>
+                    <TextBox x:Name="_rangeCount" Text="10" MinWidth="40" HorizontalContentAlignment="Center"/>
+                </StackPanel>
+                <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
+                    <Button Content="Remove" Margin="4,0,2,0">
+                        <i:Interaction.Triggers>
+                            <i:EventTrigger EventName="Click">
+                                <cal:ActionMessage MethodName="Remove">
+                                    <cal:Parameter Value="{Binding ElementName=_remove, Path=Text}" />
+                                </cal:ActionMessage>
+                            </i:EventTrigger>
+                        </i:Interaction.Triggers>
+                    </Button>
+                    <Button Content="RemoveAt" Margin="2,0,2,0">
+                        <i:Interaction.Triggers>
+                            <i:EventTrigger EventName="Click">
+                                <cal:ActionMessage MethodName="RemoveAt">
+                                    <cal:Parameter Value="{Binding ElementName=_remove, Path=Text}" />
+                                </cal:ActionMessage>
+                            </i:EventTrigger>
+                        </i:Interaction.Triggers>
+                    </Button>
+                    <TextBox x:Name="_remove" Text="1" MinWidth="40" HorizontalContentAlignment="Center"/>
+                </StackPanel>
+            </Grid>
+        </Border>
+        <Grid Grid.Row="1" Margin="0,5,0,0" Background="#FF262523">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" MinHeight="10"/>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
+            <TextBlock Text="{Binding Data.Action}" FontFamily="Ampersand" FontSize="36" HorizontalAlignment="Center" Margin="5" Foreground="#FFF5EEEE" FontWeight="ExtraBold"/>
+            <Border BorderBrush="#FF232020" BorderThickness="2" Grid.Row="1" Padding="10"  Background="#FFF8F7F2">
+                <ScrollViewer x:Name="scrollViewer"
+                          HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto">
+                    <Grid DataContext="{Binding Data}" MinHeight="{Binding Height, Mode=OneWay}" MinWidth="{Binding Width, Mode=OneWay}">
+                        <ListBox  Background="Transparent" BorderThickness="0"
+                                 ItemsSource="{Binding ., Mode=OneWay}"
+                                 ItemTemplateSelector="{StaticResource itemSelector}"
+                                 Style="{StaticResource ListBoxStyle}" 
+                                
+                                ScrollViewer.CanContentScroll="True">
+                            <ListBox.ItemsPanel>
+                                <ItemsPanelTemplate>
+                                    <Canvas HorizontalAlignment="Stretch" VerticalAlignment="Stretch"
+                                        Background="Transparent"
+                                            IsItemsHost="True"  
+                                            ScrollViewer.CanContentScroll="True"/>
+                                </ItemsPanelTemplate>
+                            </ListBox.ItemsPanel>
+                            <ListBox.ItemContainerStyle>
+                                <Style TargetType="ListBoxItem">
+                                    <Setter Property="Canvas.Left" Value="{Binding X}" />
+                                    <Setter Property="Canvas.Top" Value="{Binding Y}" />
+                                </Style>
+                            </ListBox.ItemContainerStyle>
+                        </ListBox>
+                    </Grid>
+                </ScrollViewer>
+            </Border>
+        </Grid>
+    </Grid>
+</Window>

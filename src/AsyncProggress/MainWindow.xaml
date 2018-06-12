@@ -1,0 +1,23 @@
+﻿<Window x:Class="Sela.Samples.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="MainWindow" Height="350" Width="500">
+    <Window.Resources>
+        <DataTemplate x:Key="Images">
+            <Image Source="{Binding}" Stretch="Fill" Width="Auto" Height="50"/>
+        </DataTemplate>
+    </Window.Resources>
+    
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="24*"/>
+            <ColumnDefinition Width="25*"/>
+            <ColumnDefinition Width="25*"/>
+        </Grid.ColumnDefinitions>
+        <ListBox ItemsSource="{Binding Data1}" Margin="3"/>
+        <ListBox ItemsSource="{Binding Data2}" Margin="3" Grid.Column="1"/>
+        <ListBox ItemsSource="{Binding Data3}" Margin="3" Grid.Column="2"
+                ItemTemplate="{StaticResource Images}" />
+    </Grid>
+
+</Window>
