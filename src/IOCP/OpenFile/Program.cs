@@ -19,8 +19,8 @@ namespace OpenFile
             Console.WriteLine("Start");
 
             CreateLargeFile();
-            APMWithFiles(); // This is a problem (only in APM)
-            //TPLWithFiles();
+            //APMWithFiles(); // This is a problem (only in APM)
+            TPLWithFiles();
 
             Console.WriteLine("\r\nCopy completed");
             Console.ReadKey();
