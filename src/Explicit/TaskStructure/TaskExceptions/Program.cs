@@ -16,12 +16,13 @@ namespace Tpl.Samples
                     
                 };
 
-            //SimpleExceptionHandling();
+            SimpleExceptionHandling();
 
-            MultiExceptions();
+            //MultiExceptions();
             //ComplexExceptionHandling();
             Console.ReadKey();
         }
+
 
         #region SimpleExceptionHandling
 
