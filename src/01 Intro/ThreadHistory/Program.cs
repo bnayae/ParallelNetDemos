@@ -18,12 +18,10 @@ namespace ThreadHistory
 
         static void Main(string[] args)
         {
-            Console.WriteLine($"Server GC = {GCSettings.IsServerGC}");
-
             Synchronic();
-            Unsafe();
-            //Locking();
-            //Interlocking();
+            //Unsafe();
+            Locking();
+            Interlocking();
             DataLocality();
 
             Console.WriteLine();
@@ -139,6 +137,7 @@ namespace ThreadHistory
             Console.WriteLine("Interlocking: _index = {0}, Duration = {1}", index, sw.ElapsedMilliseconds);
             Console.WriteLine("------------------------------------------------------------");
         }
+      
 
         #endregion // Interlocking
 
