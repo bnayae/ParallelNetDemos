@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading;
@@ -19,14 +20,14 @@ namespace Sela.Samples
         {
             _scd = TaskScheduler.FromCurrentSynchronizationContext(); 
             Data = new ObservableCollection<string>();
-            _tmr = new Timer(state =>
-                {
-                    //Data.Add(Environment.TickCount);
-                    Task.Factory.StartNew(() => Data.Insert(0, GetRandomString()),
-                        CancellationToken.None,
-                        TaskCreationOptions.None,
-                        _scd); // execute on the UI thread
-                }, null, 2000, 1000);
+            //_tmr = new Timer(state =>
+            //    {
+            //        //Data.Add(Environment.TickCount);
+            //        Task.Factory.StartNew(() => Data.Insert(0, GetRandomString()),
+            //            CancellationToken.None,
+            //            TaskCreationOptions.None,
+            //            _scd); // execute on the UI thread
+            //    }, null, 2000, 1000);
             Task.Run(() => Thread.Sleep(1000)) // do some off-line work
                 .ContinueWith(completed =>
                     {

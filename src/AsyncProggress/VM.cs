@@ -5,6 +5,7 @@ using System.ComponentModel;
 using System.Diagnostics;
 using System.Linq;
 using System.Net;
+using System.Net.Http;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
@@ -15,6 +16,8 @@ namespace Sela.Samples
     {
         private static readonly string[] URLS =
             {
+            "https://source.unsplash.com/1200x1200/?dog",
+            "https://source.unsplash.com/1200x1200/?cat",
                 "http://r.ddmcdn.com/s_f/o_1/cx_633/cy_0/cw_1725/ch_1725/w_720/APL/uploads/2014/11/too-cute-doggone-it-video-playlist.jpg",
                 "https://cdn.pixabay.com/photo/2016/02/19/15/46/dog-1210559_960_720.jpg",
                 "http://r.ddmcdn.com/s_f/o_1/cx_633/cy_0/cw_1725/ch_1725/w_720/APL/uploads/2014/11/too-cute-doggone-it-video-playlist.jpg",
@@ -42,12 +45,15 @@ namespace Sela.Samples
 
         private async Task DownloadAsync()
         {
-            WebClient wc = new WebClient();
-            foreach (var url in URLS)
+            //WebClient wc = new WebClient();
+            using (var wc = new HttpClient())
             {
-                byte[] image = await wc.DownloadDataTaskAsync(url);
-                Data3.Add(image);
+                foreach (var url in URLS)
+                {
+                    byte[] image = await wc.GetByteArrayAsync(url);
+                    Data3.Add(image);
 
+                }
             }
             //string data = await ImageProcess();
             // ON UI
